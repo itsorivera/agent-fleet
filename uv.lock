@@ -35,7 +35,7 @@ http-server = [
 [[package]]
 name = "agent-quality"
 version = "0.1.0"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "a2a-sdk", extra = ["http-server"] },
     { name = "aiohttp" },

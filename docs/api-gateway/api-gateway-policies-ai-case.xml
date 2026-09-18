@@ -1,0 +1,47 @@
+<policies>
+  <inbound>
+    <base />
+    <set-backend-service backend-id="foundry-backend" />
+    <authentication-managed-identity resource="https://cognitiveservices.azure.com" />
+
+    <!-- Resolve the model/deployment name. The Foundry Model Inference API
+         (/models/chat/completions, /models/embeddings, /anthropic/v1/messages)
+         passes it in the JSON body as "model". The Azure OpenAI-style surface
+         (/openai/deployments/{name}/...) passes it in the URL path. Handle both. -->
+
+    <set-variable name="deployment-id" value="@{
+        var path = context.Request.Url.Path ?? "";
+        var m = System.Text.RegularExpressions.Regex.Match(path, "/deployments/([^/?]+)");
+        if (m.Success) { return m.Groups[1].Value; }
+        try {
+            var body = context.Request.Body?.As<JObject>(preserveContent: true);
+            var model = body?["model"];
+            if (model != null && !string.IsNullOrEmpty(model.ToString())) {
+                return model.ToString();
+            }
+        } catch (Exception) { }
+        return "unknown";
+    }" />
+
+    <!-- Emit token-usage metrics dimensioned by model, so consumption can be
+         sliced per model in Azure Monitor / Application Insights. -->
+
+    <azure-openai-emit-token-metric namespace="genai-tokens">
+        <dimension name="ModelDeploymentName" value="@((string)context.Variables["deployment-id"])" />
+        <dimension name="ModelName" value="@((string)context.Variables["deployment-id"])" />
+        <dimension name="APIId" value="@(context.Api.Id)" />
+        <dimension name="Subscription" value="@(context.Subscription?.Id ?? "none")" />
+        <dimension name="Client IP" value="@(context.Request.IpAddress)" />
+        <dimension name="Product ID" value="@(context.Product?.Id ?? "none")" />
+    </azure-openai-emit-token-metric>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies> 

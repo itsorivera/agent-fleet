@@ -1,13 +1,16 @@
 # Agent Fleet — Multi-Agent System on A2A
 
-A real working **multi-agent system** that communicates over the **A2A protocol** (Agent2Agent, JSON-RPC over HTTP). An **orchestrator agent** discovers specialist **sub-agents** through a registry of A2A Agent Cards, dispatches the user's message over the wire using the official A2A Python SDK, and returns the sub-agent's response verbatim.
+> This portfolio project exists to demonstrate an **Advanced Agent Paradigm: Supervisor Agent and Sub-agents Architecture**.
 
-> This is a portfolio project: the point is to show a working, standards-based agent-to-agent orchestration — not a mock. Run it locally, watch every A2A message in the logs, and reuse the pattern for real services.
+A real working **multi-agent system** that communicates over the **A2A protocol** (Agent2Agent, JSON-RPC over HTTP). A **supervisor agent** (orchestrator) maintains the conversation, decides intent, discovers specialist **sub-agents** through a registry of A2A Agent Cards, dispatches the user's message over the wire using the official A2A Python SDK, and returns the sub-agent's response verbatim.
+
+> This is a portfolio project: the point is to show a working, standards-based **supervisor / sub-agents** architecture — not a mock. Run it locally, watch every A2A message in the logs, and reuse the pattern for real services.
 
 ---
 
 ## What it demonstrates
 
+- **Supervisor Agent and Sub-agents Architecture**: the orchestrator acts as a supervisor — it receives the user request, extracts intent, routes it to the right specialist sub-agent, and streams back the result. Sub-agents are autonomous, discoverable and replaceable.
 - **Real A2A dispatch** (v1.0, JSON-RPC over HTTP): the orchestrator resolves an `Agent Card` from `/.well-known/agent-card.json` and sends a `SendMessage` request. No simulated network calls.
 - **Orchestrator → sub-agents** workflow (`topic extraction → registry lookup → A2A dispatch`) built with **LangGraph**, with a Google ADK variant included.
 - **Multi-agent gateway** exposing multiple sub-agents (`conversational`, `portfolio-qa`) behind a single FastAPI service, each with its own Agent Card, skill and security scheme.
@@ -25,7 +28,8 @@ A real working **multi-agent system** that communicates over the **A2A protocol*
 └───────────────────────────────┬────────────────────────────────────────┘
                                 │
                     ┌───────────▼───────────────┐
-                    │         ORCHESTRATOR       │   src-agent-orchestrator
+                    │   SUPERVISOR AGENT         │   src-agent-orchestrator
+                    │      (ORCHESTRATOR)        │
                     │    (LangGraph workflow)    │
                     │                            │
                     │ 1. extract primary topic   │  (Gemini 2.5 Flash, or
@@ -40,7 +44,7 @@ A real working **multi-agent system** that communicates over the **A2A protocol*
                     │         (FastAPI)             │
                     │                               │
                     │  ┌───────────────┐  ┌───────────────┐
-                    │  │ conversational│  │ portfolio-qa  │
+                    │  │ conversational│  │ portfolio-qa  │  SUB-AGENTS
                     │  │   (public)    │  │ (X-API-Key)   │
                     │  └───────────────┘  └───────────────┘
                     └───────────────────────────────┘
@@ -158,7 +162,7 @@ All agents are provider-agnostic: they talk to the `ChatBackend` port. Available
 - **One agent = one file**: agents are short recipes (`agent_id`, name, skill, backend, security) over a shared Template Method — no duplicated wiring.
 - **Hexagonal core**: `ports/` has no infrastructure; `utils/`, `a2a_interface/` and `app.py` are the adapters. This is why the same system can serve `echo`, OpenAI, LiteLLM and the A2A protocol without touching domain logic.
 - **Security as a cross-cutting concern**: API keys are validated by HTTP middleware keyed by path prefix; the card only *declares* the scheme.
-- **Orchestrator ↔ sub-agents decoupled**: the orchestrator knows nothing about implementation — only registry entries + A2A. Sub-agents can be replaced, scaled or moved to another host without touching the workflow.
+- **Supervisor / sub-agents decoupled**: the supervisor knows nothing about implementation — only registry entries + A2A. Sub-agents can be replaced, scaled or moved to another host without touching the workflow.
 
 ---
 
@@ -184,4 +188,4 @@ All agents are provider-agnostic: they talk to the `ChatBackend` port. Available
 
 ## Author
 
-Itsorivera — portfolio project exploring standards-based, multi-agent interoperability with the A2A protocol.
+Itsorivera — portfolio project demonstrating the **Supervisor Agent and Sub-agents Architecture** via standards-based, multi-agent interoperability with the A2A protocol.

@@ -1,5 +1,5 @@
 [project]
-name = "agent-quality"
+name = "agent-fleet"
 version = "0.1.0"
 description = "Multi-agent system over the A2A protocol: LangGraph orchestrator + A2A multi-agent gateway (Python) and a cross-language A2A agent (TypeScript)."
 readme = "README.md"
@@ -13,10 +13,13 @@ dependencies = [
     "fastapi>=0.115.0",
     "google-adk>=2.7.1",
     "httpx>=0.28.1",
+    "langchain-openai>=0.3.0",
     "langgraph>=1.2.11",
     "openai>=1.40.0",
     "python-dotenv>=1.0.0",
     "uvicorn[standard]>=0.30.0",
+    "structlog>=25.5.0",
+
 ]
 
 [tool.uv]

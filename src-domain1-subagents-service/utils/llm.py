@@ -2,11 +2,14 @@
 
 Los contratos (``ChatBackend``/``ChatBackendBase``) viven en
 src/ports/llm.py; aqui estan las implementaciones concretas: OpenAI,
-echo, mas los mappers y la factory. La capa A2A (server.py) nunca sabe si
-detras hay OpenAI, un LLM local o un echo fijo: solo conoce el puerto.
+Azure Foundry via APIM, echo, mas los mappers y la factory. La capa A2A
+(server.py) nunca sabe si detras hay OpenAI, un LLM local o un echo fijo:
+solo conoce el puerto.
 
 Para verificar el protocolo sin gastar tokens, usa `provider="echo"`
-(CHAT_PROVIDER=echo). Para produccion usa "openai" o escribe tu propio backend.
+(CHAT_PROVIDER=echo). Produccion: "openai" contra cualquier compatible, o
+"azure" para consumir un modelo de Azure Foundry a traves del AI Gateway
+(APIM) — governance/monitoreo del LLM en el punto central.
 """
 
 from __future__ import annotations
@@ -97,6 +100,89 @@ class EchoBackend(ChatBackendBase):
         return f"{self._prefix} echo: {self._last_text(history)}"
 
 
+class AzureChatBackend(ChatBackendBase):
+    """Backend hacia modelos de Azure Foundry a traves del AI Gateway (APIM).
+
+    Envuelve ``AzureChatOpenAI`` (langchain-openai) apuntando al endpoint de
+    APIM en vez de directo al deployment de Foundry. Todo el trafico del LLM
+    pasa por un unico choke point donde el gateway aplica gobierno de uso
+    (quota, RBAC), monitoreo (telemetria de tokens/costo por flota) y control
+    (routing/failover). La identidad del agente viaja en headers propios:
+    ``X-Agent-Fleet`` y ``X-Business-Unit``, ademas de la subscription key.
+
+    El ``deployment`` debe coincidir con el nombre desplegado en Foundry.
+    """
+
+    def __init__(
+        self,
+        *,
+        endpoint: str,
+        deployment: str,
+        api_version: str,
+        api_key: str,
+        temperature: float | None = None,
+        fleet: str = "fleet-lab-01",
+        business_unit: str = "sandbox",
+    ):
+        from langchain_openai import AzureChatOpenAI
+
+        kwargs: dict[str, object] = {}
+        if temperature is not None:
+            kwargs["temperature"] = temperature
+
+        self._chat = AzureChatOpenAI(
+            azure_endpoint=endpoint,
+            azure_deployment=deployment,
+            api_version=api_version,
+            api_key=api_key,
+            default_headers={
+                # AzureChatOpenAI manda `api-key`; algunos endpoints APIM
+                # ademas exigen la subscription key explicita.
+                "Ocp-Apim-Subscription-Key": api_key,
+                "X-Agent-Fleet": fleet,
+                "X-Business-Unit": business_unit,
+            },
+            **kwargs,
+        )
+
+    @staticmethod
+    def _content_text(content: Any) -> str:
+        """Normaliza `content` de LangChain (str | list de bloques) a texto."""
+        if isinstance(content, str):
+            return content
+        if isinstance(content, list):
+            parts: List[str] = []
+            for block in content:
+                if isinstance(block, str):
+                    parts.append(block)
+                elif isinstance(block, dict) and block.get("type") == "text":
+                    parts.append(str(block.get("text", "")))
+            return "".join(parts)
+        return str(content)
+
+    def _messages(self, system: str, history: List[Dict[str, Any]]):
+        from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+
+        messages = [SystemMessage(content=system)]
+        for m in history:
+            content = parts_to_text(m.get("parts", []))
+            if not content:
+                continue
+            role = "user" if m.get("role") == "user" else "assistant"
+            messages.append(HumanMessage(content=content) if role == "user" else AIMessage(content=content))
+        return messages
+
+    async def chat(self, *, system: str, history: List[Dict[str, Any]]) -> str:
+        response = await self._chat.ainvoke(self._messages(system, history))
+        return self._content_text(response.content)
+
+    async def _stream(self, system: str, history: List[Dict[str, Any]]) -> AsyncIterator[str]:
+        async for chunk in self._chat.astream(self._messages(system, history)):
+            text = self._content_text(chunk.content)
+            if text:
+                yield text
+
+
 def build_backend(
     provider: str = "openai",
     *,
@@ -107,6 +193,19 @@ def build_backend(
     """Factory que elige backend segun configuracion (env CHAT_PROVIDER)."""
     if provider == "echo":
         return EchoBackend(prefix=agent_name)
+    if provider == "azure":
+        key = os.getenv("APIM_KEY") or api_key
+        endpoint = os.getenv("AZURE_ENDPOINT")
+        if not (key and endpoint):
+            raise RuntimeError(
+                "provider=azure requiere APIM_KEY y AZURE_ENDPOINT (o usa CHAT_PROVIDER=echo para pruebas)"
+            )
+        return AzureChatBackend(
+            endpoint=endpoint,
+            deployment=os.getenv("AZURE_DEPLOYMENT") or model,
+            api_version=os.getenv("AZURE_API_VERSION", "2024-10-21"),
+            api_key=key,
+        )
     key = api_key or os.getenv("OPENAI_API_KEY")
     if not key:
         raise RuntimeError(

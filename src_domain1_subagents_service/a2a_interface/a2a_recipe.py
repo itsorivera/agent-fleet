@@ -33,8 +33,8 @@ from a2a.types import (
 from a2a.utils.constants import PROTOCOL_VERSION_1_0  # type: ignore[attr-defined]
 
 from .a2a_adapter import SdkChatAgent, SdkChatExecutor
-from ports.llm import ChatBackend
-from ports.spec import AgentSpec
+from src_domain1_subagents_service.ports.llm import ChatBackend
+from src_domain1_subagents_service.ports.spec import AgentSpec
 
 
 @dataclass(frozen=True)

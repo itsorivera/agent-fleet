@@ -17,8 +17,8 @@ from __future__ import annotations
 import os
 from typing import Any, AsyncIterator, Dict, List
 
-from utils.protocol import parts_to_text
-from ports.llm import ChatBackend, ChatBackendBase
+from src_domain1_subagents_service.utils.protocol import parts_to_text
+from src_domain1_subagents_service.ports.llm import ChatBackend, ChatBackendBase
 
 
 def history_to_openai(history: List[Dict[str, Any]], system: str) -> List[Dict[str, str]]:
@@ -124,26 +124,22 @@ class AzureChatBackend(ChatBackendBase):
         fleet: str = "fleet-lab-01",
         business_unit: str = "sandbox",
     ):
-        from langchain_openai import AzureChatOpenAI
-
-        kwargs: dict[str, object] = {}
-        if temperature is not None:
-            kwargs["temperature"] = temperature
-
-        self._chat = AzureChatOpenAI(
-            azure_endpoint=endpoint,
-            azure_deployment=deployment,
-            api_version=api_version,
-            api_key=api_key,
-            default_headers={
-                # AzureChatOpenAI manda `api-key`; algunos endpoints APIM
-                # ademas exigen la subscription key explicita.
-                "Ocp-Apim-Subscription-Key": api_key,
-                "X-Agent-Fleet": fleet,
-                "X-Business-Unit": business_unit,
-            },
-            **kwargs,
+        from src_domain1_subagents_service.adapter.llm.ia_foundry_provider_llm_adapter import (
+            IAFoundryLLMAdapter,
         )
+
+        # El agente nunca construye clientes directamente: delega la creacion
+        # del AzureChatOpenAI en el patron maduro LLMProviderPort (IAFoundry).
+        # Quien quiera otro proveedor solo cambia el adapter del puerto.
+        adapter = IAFoundryLLMAdapter(
+            azure_endpoint=endpoint,
+            api_key=api_key,
+            api_version=api_version,
+            deployment_name=deployment,
+            fleet=fleet,
+            business_unit=business_unit,
+        )
+        self._chat = adapter.get_llm(model_id=deployment, temperature=temperature)
 
     @staticmethod
     def _content_text(content: Any) -> str:

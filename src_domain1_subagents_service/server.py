@@ -5,7 +5,7 @@ Toda la logica (recetas de agentes, politicas de auth, montaje de rutas) vive
 en app.py / agents/{sdk,portfolio_qa}_agent.py, no aqui.
 
 Para verificar la auth del portfolio-qa agent (401 sin key):
-    $env:PORTFOLIO_QA_API_KEY="dev-key"; python -m server
+    $env:PORTFOLIO_QA_API_KEY="dev-key"; uv run python -m src_domain1_subagents_service.server
     curl -X POST http://127.0.0.1:2024/a2a/portfolio-qa -H "A2A-Version: 1.0" ...
 """
 
@@ -16,10 +16,12 @@ import os
 from dotenv import load_dotenv
 import uvicorn
 
-from a2a_interface.agents.sdk_agent import build_sdk_agent
-from a2a_interface.agents.portfolio_qa_agent import build_portfolio_qa_agent
-from app import create_app
-from a2a_interface.a2a_recipe import AgentSettings
+from src_domain1_subagents_service.a2a_interface.agents.sdk_agent import build_sdk_agent
+from src_domain1_subagents_service.a2a_interface.agents.portfolio_qa_agent import (
+    build_portfolio_qa_agent,
+)
+from src_domain1_subagents_service.app import create_app
+from src_domain1_subagents_service.a2a_interface.a2a_recipe import AgentSettings
 
 
 def main() -> None:

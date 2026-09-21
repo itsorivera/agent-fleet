@@ -15,10 +15,13 @@ import os
 
 from a2a.types import AgentSkill
 
-from utils.llm import build_backend
-from a2a_interface.a2a_recipe import AgentRecipe, AgentSettings
-from ports.llm import ChatBackend
-from ports.spec import AgentSpec
+from src_domain1_subagents_service.utils.llm import build_backend
+from src_domain1_subagents_service.a2a_interface.a2a_recipe import (
+    AgentRecipe,
+    AgentSettings,
+)
+from src_domain1_subagents_service.ports.llm import ChatBackend
+from src_domain1_subagents_service.ports.spec import AgentSpec
 
 
 class ConversationalAgent(AgentRecipe):
@@ -85,7 +88,7 @@ def build_sdk_agent(
     )
     backend = build_backend(
         os.getenv("CHAT_PROVIDER", "echo"),
-        api_key=os.getenv("OPENAI_API_KEY"),
+        api_key=os.getenv("APIM_KEY"),
         model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         agent_name=name,
     )

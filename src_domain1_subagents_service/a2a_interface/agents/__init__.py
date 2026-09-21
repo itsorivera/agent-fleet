@@ -18,6 +18,8 @@ Reglas vigentes para anadir un agente aqui:
 
 __all__ = ["build_portfolio_qa_agent", "build_sdk_agent"]
 
-from a2a_interface.agents.portfolio_qa_agent import build_portfolio_qa_agent
-from a2a_interface.agents.sdk_agent import build_sdk_agent
+from src_domain1_subagents_service.a2a_interface.agents.portfolio_qa_agent import (
+    build_portfolio_qa_agent,
+)
+from src_domain1_subagents_service.a2a_interface.agents.sdk_agent import build_sdk_agent
 

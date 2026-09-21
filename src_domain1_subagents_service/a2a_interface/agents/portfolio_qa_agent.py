@@ -22,10 +22,13 @@ from a2a.types import (
     StringList,
 )
 
-from utils.protocol import parts_to_text
-from a2a_interface.a2a_recipe import AgentRecipe, AgentSettings
-from ports.llm import ChatBackend, ChatBackendBase
-from ports.spec import AgentSpec
+from src_domain1_subagents_service.utils.protocol import parts_to_text
+from src_domain1_subagents_service.a2a_interface.a2a_recipe import (
+    AgentRecipe,
+    AgentSettings,
+)
+from src_domain1_subagents_service.ports.llm import ChatBackend, ChatBackendBase
+from src_domain1_subagents_service.ports.spec import AgentSpec
 
 
 class PortfolioFactsBackend(ChatBackendBase):

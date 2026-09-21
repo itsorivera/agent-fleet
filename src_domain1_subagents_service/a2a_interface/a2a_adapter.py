@@ -21,7 +21,7 @@ from a2a.server.events import EventQueue
 from a2a.server.tasks import TaskUpdater
 from a2a.types import Role, TaskState
 
-from ports.llm import ChatBackend
+from src_domain1_subagents_service.ports.llm import ChatBackend
 
 
 class SdkChatAgent:

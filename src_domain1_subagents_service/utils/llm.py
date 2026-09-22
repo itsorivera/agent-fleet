@@ -190,15 +190,18 @@ def build_backend(
     if provider == "echo":
         return EchoBackend(prefix=agent_name)
     if provider == "azure":
-        key = os.getenv("APIM_KEY") or api_key
-        endpoint = os.getenv("AZURE_ENDPOINT")
+        key = os.getenv("AZ_APIM_SUBSCRIPTION_KEY") or api_key
+        endpoint = os.getenv("AZ_AI_ENDPOINT")
         if not (key and endpoint):
             raise RuntimeError(
-                "provider=azure requiere APIM_KEY y AZURE_ENDPOINT (o usa CHAT_PROVIDER=echo para pruebas)"
+                "provider=azure requiere AZ_APIM_SUBSCRIPTION_KEY y AZ_AI_ENDPOINT (o usa CHAT_PROVIDER=echo para pruebas)"
             )
+        deployment = (
+            os.getenv("AZ_DEPLOYMENT") or os.getenv("AZURE_DEPLOYMENT") or model
+        )
         return AzureChatBackend(
             endpoint=endpoint,
-            deployment=os.getenv("AZURE_DEPLOYMENT") or model,
+            deployment=deployment,
             api_version=os.getenv("AZURE_API_VERSION", "2024-10-21"),
             api_key=key,
         )

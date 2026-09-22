@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 
 # Make imports resolvable regardless of CWD (runnable from repo root or dir).
 _SRC_DIR = Path(__file__).resolve().parent
-for _p in (_SRC_DIR.parent, _SRC_DIR.parent / "src-domain1-agents-service"):
+for _p in (_SRC_DIR.parent, _SRC_DIR.parent / "src_domain1_subagents_service"):
     sys.path.insert(0, str(_p))
 
 load_dotenv(_SRC_DIR.parent / ".env")
@@ -186,11 +186,29 @@ class OrchestratorState(TypedDict):
 # ===========================================================================
 # 4. Definicion de Nodos de la Arquitectura
 # ===========================================================================
-# Extraccion de topic. Si hay GOOGLE_API_KEY/GEMINI_API_KEY y el paquete
-# langchain_google_genai esta instalado, usa Gemini; si no, cae a un
+# Extraccion de topic. Prioridad: (1) modelo de Azure Foundry a traves del
+# AI Gateway (APIM) reutilizando el patron maduro IAFoundryLLMAdapter
+# (src_domain1_subagents_service) si hay AZ_APIM_SUBSCRIPTION_KEY/AZ_AI_ENDPOINT;
+# (2) Gemini si hay GOOGLE_API_KEY/GEMINI_API_KEY; si no, cae a un
 # extractor determinista por keywords para que la demo corra 100% local
 # sin credenciales ni dependencias opcionales.
 def _build_llm():
+    apim_key = os.getenv("AZ_APIM_SUBSCRIPTION_KEY") or os.getenv("AZURE_OPENAI_API_KEY")
+    apim_endpoint = os.getenv("AZ_AI_ENDPOINT") or os.getenv("AZ_ENDPOINT")
+    if apim_key and apim_endpoint:
+        try:
+            from src_domain1_subagents_service.adapter.llm.ia_foundry_provider_llm_adapter import (  # noqa: PLC0415
+                IAFoundryLLMAdapter,
+            )
+
+            # Misma fuente unica que los sub-agentes: telemetria de flota
+            # (X-Agent-Fleet/X-Business-Unit) y subscription key por APIM.
+            return IAFoundryLLMAdapter().get_llm(
+                model_id=os.getenv("AZ_DEPLOYMENT")
+                or os.getenv("AZURE_DEPLOYMENT", "gpt-5-mini")
+            )
+        except ImportError:
+            pass
     if not (os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")):
         return None
     try:

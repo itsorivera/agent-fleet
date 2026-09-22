@@ -88,7 +88,7 @@ def build_sdk_agent(
     )
     backend = build_backend(
         os.getenv("CHAT_PROVIDER", "echo"),
-        api_key=os.getenv("APIM_KEY"),
+        api_key=os.getenv("AZ_APIM_SUBSCRIPTION_KEY"),
         model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         agent_name=name,
     )

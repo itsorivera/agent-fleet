@@ -16,19 +16,19 @@ import os
 from dotenv import load_dotenv
 import uvicorn
 
-from src_domain1_subagents_service.a2a_interface.agents.conversational_agent import build_sdk_agent
-from src_domain1_subagents_service.a2a_interface.agents.portfolio_qa_agent import (
+from src_domain1_subagents1_service.a2a_interface.agents.a2a_conversational_agent import build_conversational_agent
+from src_domain1_subagents1_service.a2a_interface.agents.portfolio_qa_agent import (
     build_portfolio_qa_agent,
 )
-from src_domain1_subagents_service.app import create_app
-from src_domain1_subagents_service.a2a_interface.a2a_recipe import AgentSettings
+from src_domain1_subagents1_service.app import create_app
+from src_domain1_subagents1_service.a2a_interface.a2a_recipe import A2AAgentConfig
 
 
 def main() -> None:
     load_dotenv(override=True)
 
-    # Un unico AgentSettings como unico punto de despliegue (host/port/url).
-    settings = AgentSettings.from_env()
+    # Un unico A2AAgentConfig como unico punto de despliegue (host/port/url).
+    settings = A2AAgentConfig.from_env()
 
     # Politica de auth por path (edge). Sin env key el agente queda abierto
     # para dev; en produccion la key vive en el secret manager, no en .env.
@@ -39,7 +39,7 @@ def main() -> None:
 
     app = create_app(
         agents=[
-            build_sdk_agent(settings=settings),
+            build_conversational_agent(settings=settings),
             build_portfolio_qa_agent(settings=settings),
         ],
         auth_policies=policies,

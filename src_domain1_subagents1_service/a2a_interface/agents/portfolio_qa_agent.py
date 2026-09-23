@@ -22,20 +22,20 @@ from a2a.types import (
     StringList,
 )
 
-from src_domain1_subagents_service.utils.protocol import parts_to_text
-from src_domain1_subagents_service.a2a_interface.a2a_recipe import (
-    AgentRecipe,
-    AgentSettings,
+from src_domain1_subagents1_service.utils.protocol import parts_to_text
+from src_domain1_subagents1_service.a2a_interface.a2a_recipe import (
+    A2AAgentRecipe,
+    A2AAgentConfig,
 )
-from src_domain1_subagents_service.ports.llm import ChatBackend, ChatBackendBase
-from src_domain1_subagents_service.ports.spec import AgentSpec
+from src_domain1_subagents1_service.ports.llm import ChatBackend, ChatBackendBase
+from src_domain1_subagents1_service.ports.spec import A2ASpec
 
 
 class PortfolioFactsBackend(ChatBackendBase):
     """Backend determinista de dominio (sin LLM): respuestas de cartera.
 
     Demuestra que el executor del SDK es agnostico del proveedor: el mismo
-    SdkChatAgent/SdkChatExecutor de core.py funciona con cualquier objeto
+    A2AChatAgent/A2AExecutor de core.py funciona con cualquier objeto
     que cumpla la interfaz ChatBackend. Reglas triviales solo para que el
     wire format sea verificable sin gastar tokens.
 
@@ -81,10 +81,10 @@ class PortfolioFactsBackend(ChatBackendBase):
         )
 
 
-class PortfolioQaAgent(AgentRecipe):
+class PortfolioQaAgent(A2AAgentRecipe):
     """Receta del agente portfolio-qa: identidad, backend y security de la card.
 
-    Su delta respecto de AgentRecipe.build():
+    Su delta respecto de A2AAgentRecipe.build():
         - una API key (``portfolioKey``) declarada en securitySchemes (header
           ``X-API-Key``) y exigida via securityRequirements en card y skill.
         - un backend determinista de reglas (sin LLM) para QA de solo-lectura.
@@ -95,7 +95,7 @@ class PortfolioQaAgent(AgentRecipe):
     def __init__(
         self,
         *,
-        settings: AgentSettings,
+        settings: A2AAgentConfig,
         backend: ChatBackend,
         name: str,
         description: str,
@@ -154,19 +154,19 @@ class PortfolioQaAgent(AgentRecipe):
 
 
 def build_portfolio_qa_agent(
-    settings: AgentSettings | None = None,
+    settings: A2AAgentConfig | None = None,
     *,
     name: str | None = None,
     description: str | None = None,
-) -> AgentSpec:
+) -> A2ASpec:
     """Factory inyectable del agente de QA del portafolio (solo-lectura, con API key).
 
-    Diferencia clave vs build_sdk_agent: la card declara el esquema de
+    Diferencia clave vs build_conversational_agent: la card declara el esquema de
     seguridad (API key en header ``X-API-Key``) y lo exige via
     securityRequirements. La API key en si NO vive aqui: se configura en el
     composition root (app.py / server.py) y se valida en middleware HTTP.
     """
-    settings = settings or AgentSettings.from_env()
+    settings = settings or A2AAgentConfig.from_env()
     name = name or os.getenv("QA_AGENT_NAME", "Portfolio QA Agent")
     description = description or os.getenv(
         "QA_AGENT_DESCRIPTION",

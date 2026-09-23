@@ -1,4 +1,4 @@
-"""``AgentSpec``: puerto de salida — la receta lista para montar.
+"""``A2ASpec``: puerto de salida — la receta lista para montar.
 
 Es el contrato entre las recetas (sdk_variant/agents/*) y el transporte
 (app.py, composition root). Un agente no deberia saber si se expone por
@@ -19,7 +19,7 @@ AGENT_CARD_WELL_KNOWN = "/.well-known/agent-card.json"
 
 
 @dataclass
-class AgentSpec:
+class A2ASpec:
     """Receta de un agente: lo unico que el transporte necesita para montarlo.
 
     Atributos:

@@ -1,9 +1,9 @@
 """Agente conversacional (``agent_id="conversational"``): receta + factory.
 
 Cada agente vive en su propio modulo (patron "un agente = un archivo"). Este
-solo declara el delta de su receta sobre AgentRecipe (a2a_protocol.a2a_recipe):
+solo declara el delta de su receta sobre A2AAgentRecipe (a2a_protocol.a2a_recipe):
 identidad, system prompt y skill. Todo el cableado (card + handler + adapter)
-lo resuelve AgentRecipe.build() -> produce un AgentSpec listo para montar.
+lo resuelve A2AAgentRecipe.build() -> produce un A2ASpec listo para montar.
 
 Sin transporte: no importa FastAPI/uvicorn. El composition root (app.py) y
 el entrypoint (server.py) deciden la exposicion.
@@ -15,20 +15,20 @@ import os
 
 from a2a.types import AgentSkill
 
-from src_domain1_subagents_service.utils.llm import build_backend
-from src_domain1_subagents_service.a2a_interface.a2a_recipe import (
-    AgentRecipe,
-    AgentSettings,
+from src_domain1_subagents1_service.utils.llm import build_backend
+from src_domain1_subagents1_service.a2a_interface.a2a_recipe import (
+    A2AAgentRecipe,
+    A2AAgentConfig,
 )
-from src_domain1_subagents_service.ports.llm import ChatBackend
-from src_domain1_subagents_service.ports.spec import AgentSpec
+from src_domain1_subagents1_service.ports.llm import ChatBackend
+from src_domain1_subagents1_service.ports.spec import A2ASpec
 
 
-class ConversationalAgent(AgentRecipe):
+class A2AConversationalAgent(A2AAgentRecipe):
     """Receta del agente conversacional: su unico delta respecto a la base.
 
     Identidad, backend y skill; todo el cableado (card + handler + adapter)
-    lo resuelve AgentRecipe.build().
+    lo resuelve A2AAgentRecipe.build().
     """
 
     agent_id = "conversational"
@@ -36,7 +36,7 @@ class ConversationalAgent(AgentRecipe):
     def __init__(
         self,
         *,
-        settings: AgentSettings,
+        settings: A2AAgentConfig,
         backend: ChatBackend,
         name: str,
         description: str,
@@ -68,12 +68,12 @@ class ConversationalAgent(AgentRecipe):
         ]
 
 
-def build_sdk_agent(
-    settings: AgentSettings | None = None,
+def build_conversational_agent(
+    settings: A2AAgentConfig | None = None,
     *,
     name: str | None = None,
     description: str | None = None,
-) -> AgentSpec:
+) -> A2ASpec:
     """Factory inyectable del agente conversacional.
 
     Si pasas ``settings``/``name``/``description`` explicitos, el unico
@@ -81,7 +81,7 @@ def build_sdk_agent(
     fallback dev ``echo``. Para inyeccion estricta, server.py construye el
     ``ChatBackend`` y pasa el resto por parametro.
     """
-    settings = settings or AgentSettings.from_env()
+    settings = settings or A2AAgentConfig.from_env()
     name = name or os.getenv("AGENT_NAME", "SDK Conversational Agent")
     description = description or os.getenv(
         "AGENT_DESCRIPTION", "A conversational agent exposed over A2A via the official SDK."
@@ -92,6 +92,6 @@ def build_sdk_agent(
         model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         agent_name=name,
     )
-    return ConversationalAgent(
+    return A2AConversationalAgent(
         settings=settings, backend=backend, name=name, description=description
     ).build()

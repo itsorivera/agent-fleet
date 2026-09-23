@@ -6,8 +6,8 @@ from typing import Any, Optional
 from langchain_openai import AzureChatOpenAI
 from openai import AzureOpenAI
 
-from src_domain1_subagents_service.ports.llm_provider_port import LLMProviderPort
-from src_domain1_subagents_service.utils.logger import get_logger
+from src_domain1_subagents1_service.ports.llm_provider_port import LLMProviderPort
+from src_domain1_subagents1_service.utils.logger import get_logger
 
 class IAFoundryLLMAdapter(LLMProviderPort):
     """Implementación de LLM usando IAFoundry (Azure OpenAI)"""

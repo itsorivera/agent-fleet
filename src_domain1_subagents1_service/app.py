@@ -3,15 +3,15 @@
 Reune lo que antes eran dos modulos (``assembly.py`` y la propia ``app.py``):
 aqui viven tanto el montaje de rutas A2A (mount_a2a_endpoints) como la
 construccion del gateway (create_app) y las politicas de auth. El esqueleto
-de un agente (AgentSpec) vive en spec.py para que las recetas (recipe.py) no
+de un agente (A2ASpec) vive en spec.py para que las recetas (recipe.py) no
 dependan de FastAPI.
 
 Dependencias del grafo (sin ciclos):
 
     a2a_agent/ (llm.py, protocol.py)   # adapters del puerto LLM (OpenAI/echo) + wire v0.3
-      -> ports/ (llm.py, spec.py)      # PUERTOS puros: ChatBackend + AgentSpec (sin impl)
-      -> core.py                       # adapter del a2a-sdk (SdkChatAgent/Executor) [sin HTTP]
-      -> recipe.py                     # receta base (Template Method) + AgentSettings
+      -> ports/ (llm.py, spec.py)      # PUERTOS puros: ChatBackend + A2ASpec (sin impl)
+      -> core.py                       # adapter del a2a-sdk (A2AChatAgent/Executor) [sin HTTP]
+      -> recipe.py                     # receta base (Template Method) + A2AAgentConfig
       -> agents/{sdk,portfolio_qa}_agent.py  # UN modulo por agente (receta + factory)
       -> app.py                        # create_app()                     <-- composition root (este archivo)
       -> server.py                     # main()                           entrypoint (uvicorn)
@@ -37,18 +37,18 @@ from a2a.server.routes import (
     create_jsonrpc_routes,
 )
 
-from src_domain1_subagents_service.a2a_interface.agents.portfolio_qa_agent import (
+from src_domain1_subagents1_service.a2a_interface.agents.portfolio_qa_agent import (
     build_portfolio_qa_agent,
 )
-from src_domain1_subagents_service.a2a_interface.agents.conversational_agent import build_sdk_agent
-from src_domain1_subagents_service.ports.spec import AGENT_CARD_WELL_KNOWN, AgentSpec
-from src_domain1_subagents_service.a2a_interface.a2a_recipe import AgentSettings
+from src_domain1_subagents1_service.a2a_interface.agents.a2a_conversational_agent import build_conversational_agent
+from src_domain1_subagents1_service.ports.spec import AGENT_CARD_WELL_KNOWN, A2ASpec
+from src_domain1_subagents1_service.a2a_interface.a2a_recipe import A2AAgentConfig
 
 _PUBLIC_PATH_PREFIXES = ("/docs", "/redoc", "/openapi.json", "/health")
 _CARD_SUFFIX = "/.well-known/agent-card.json"
 
 
-def mount_a2a_endpoints(app: Any, spec: AgentSpec, *, root: bool = False) -> None:
+def mount_a2a_endpoints(app: Any, spec: A2ASpec, *, root: bool = False) -> None:
     """Monta card + JSON-RPC de un agente en la app y alinea la url de la card.
 
     ``root=True`` reproduce el despliegue clasico de un unico agente:
@@ -113,14 +113,14 @@ def api_key_gate(policies: dict[str, str]) -> Callable:
 
 
 def create_app(
-    agents: list[AgentSpec] | None = None,
+    agents: list[A2ASpec] | None = None,
     *,
     auth_policies: dict[str, str] | None = None,
 ) -> FastAPI:
     """Ensambla el gateway multi-agente A2A.
 
     Args:
-        agents: lista de recetas (AgentSpec). Por defecto monta los dos agentes
+        agents: lista de recetas (A2ASpec). Por defecto monta los dos agentes
             de ejemplo: conversational (publico) y portfolio-qa (con API key).
         auth_policies: mapping path-prefix -> API key esperada. El cliente la
             envia en el header ``X-API-Key``. Si es vacio, no se enforce auth.
@@ -128,11 +128,11 @@ def create_app(
     load_dotenv(override=True)
 
     if agents is None:
-        # Un solo AgentSettings compartido (unico punto para host/port/card):
+        # Un solo A2AAgentConfig compartido (unico punto para host/port/card):
         # ambos agentes comparten el mismo despliegue, no cada uno su lectura.
-        settings = AgentSettings.from_env()
+        settings = A2AAgentConfig.from_env()
         agents = [
-            build_sdk_agent(settings=settings),
+            build_conversational_agent(settings=settings),
             build_portfolio_qa_agent(settings=settings),
         ]
     policies = auth_policies or {}

@@ -7,16 +7,16 @@ configuracion.
 
 API publica (facade):
     - ``create_app()``                 : gateway multi-agente (FastAPI).
-    - ``build_sdk_agent()`` / ``build_portfolio_qa_agent()``:
-                                        recetas puras que producen un AgentSpec.
-    - ``AgentSpec``                    : receta lista para montar.
+    - ``build_conversational_agent()`` / ``build_portfolio_qa_agent()``:
+                                        recetas puras que producen un A2ASpec.
+    - ``A2ASpec``                    : receta lista para montar.
 
 Internamente (no uses estos imports desde fuera):
     - ``ports/``: puertos (contratos) puros: ``llm.py`` (ChatBackend) y
-      ``spec.py`` (AgentSpec). Sin implementacion.
-    - ``core``: adaptador del SDK `a2a-sdk` (SdkChatAgent/SdkChatExecutor).
-    - ``recipe``: receta base (Template Method) + AgentSettings (aplication/domain).
-    - ``agents/``: repertorio de agentes. UN modulo por agente (sdk_agent.py,
+      ``spec.py`` (A2ASpec). Sin implementacion.
+    - ``core``: adaptador del SDK `a2a-sdk` (A2AChatAgent/A2AExecutor).
+    - ``recipe``: receta base (Template Method) + A2AAgentConfig (aplication/domain).
+    - ``agents/``: repertorio de agentes. UN modulo por agente (conversational_agent.py,
       portfolio_qa_agent.py); su facade re-exporta solo las factories.
     - ``app``: composition root (FastAPI + rutas A2A + auth).
     - ``a2a_agent``: variante manual del protocolo (v0.3). Aqui viven los

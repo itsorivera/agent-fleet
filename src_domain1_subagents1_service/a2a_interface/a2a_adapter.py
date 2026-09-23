@@ -21,10 +21,10 @@ from a2a.server.events import EventQueue
 from a2a.server.tasks import TaskUpdater
 from a2a.types import Role, TaskState
 
-from src_domain1_subagents_service.ports.llm import ChatBackend
+from src_domain1_subagents1_service.ports.llm import ChatBackend
 
 
-class SdkChatAgent:
+class A2AChatAgent:
     """Delega en un ChatBackend (echo | openai | reglas) siguiendo el contrato.
 
     Es el adaptador de entrada del protocolo -> backend: traduce historial
@@ -60,7 +60,7 @@ class SdkChatAgent:
         )
 
 
-class SdkChatExecutor(AgentExecutor):
+class A2AExecutor(AgentExecutor):
     """Traduce el ciclo de vida de una Task A2A a llamadas al backend.
 
     Aqui el SDK encola los estados via TaskUpdater y el DefaultRequestHandler
@@ -68,7 +68,7 @@ class SdkChatExecutor(AgentExecutor):
     se hace por contextId (en v1.0 las tasks son inmutables).
     """
 
-    def __init__(self, agent: SdkChatAgent):
+    def __init__(self, agent: A2AChatAgent):
         self._agent = agent
         # Multiturn por contexto en memoria. En v1.0 las Tasks son inmutables:
         # una task "completed" no admite mas mensajes. La continuidad de un

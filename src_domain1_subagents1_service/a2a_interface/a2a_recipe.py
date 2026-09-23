@@ -1,16 +1,16 @@
 """Receta base de un agente A2A: aplication/domain + Template Method.
 
 Comun a todos los agentes del paquete. Los agentes concretos
-(agents/sdk_agent.py, agents/portfolio_qa_agent.py) son subclases cortas que
+(agents/conversational_agent.py, agents/portfolio_qa_agent.py) son subclases cortas que
 solo declaran su "delta": identidad, skills, security y backend. Aqui NO hay
 transporte — nada de FastAPI/uvicorn —, solo recetas puras que producen un
-``AgentSpec`` (ports/spec.py); el wiring de HTTP vive en app.py y el
+``A2ASpec`` (ports/spec.py); el wiring de HTTP vive en app.py y el
 entrypoint en server.py.
 
 Patrones aplicados:
-  - ``AgentRecipe``: Template Method. ``build()`` monta card + adapter +
+  - ``A2AAgentRecipe``: Template Method. ``build()`` monta card + adapter +
     handler y no debe sobreescribirse.
-  - ``AgentSettings``: configuracion de despliegue compartida e inyectable
+  - ``A2AAgentConfig``: configuracion de despliegue compartida e inyectable
     (un solo punto para HOST/PORT/PUBLIC_URL y la card). La construyen los
     entrypoints una vez y la inyectan en las factorias.
 """
@@ -32,13 +32,13 @@ from a2a.types import (
 )
 from a2a.utils.constants import PROTOCOL_VERSION_1_0  # type: ignore[attr-defined]
 
-from .a2a_adapter import SdkChatAgent, SdkChatExecutor
-from src_domain1_subagents_service.ports.llm import ChatBackend
-from src_domain1_subagents_service.ports.spec import AgentSpec
+from .a2a_adapter import A2AChatAgent, A2AExecutor
+from src_domain1_subagents1_service.ports.llm import ChatBackend
+from src_domain1_subagents1_service.ports.spec import A2ASpec
 
 
 @dataclass(frozen=True)
-class AgentSettings:
+class A2AAgentConfig:
     """Configuracion compartida de despliegue (infra, no logica de negocio).
 
     Un solo punto para la URL base y los modos por defecto de la card.
@@ -59,7 +59,7 @@ class AgentSettings:
         return (self.public_url or f"http://{self.host}:{self.port}").rstrip("/")
 
     @classmethod
-    def from_env(cls) -> "AgentSettings":
+    def from_env(cls) -> "A2AAgentConfig":
         """Lee HOST/PORT/PUBLIC_URL del entorno (el caller ya cargo .env)."""
         return cls(
             host=os.getenv("HOST", "127.0.0.1"),
@@ -68,8 +68,8 @@ class AgentSettings:
         )
 
 
-class AgentRecipe:
-    """Template Method: esqueleto comun para construir un AgentSpec.
+class A2AAgentRecipe:
+    """Template Method: esqueleto comun para construir un A2ASpec.
 
     Hook obligatorios (las subclases declaran su "delta"):
         agent_id, name, description, build_skills()
@@ -77,13 +77,13 @@ class AgentRecipe:
         build_system_prompt(), build_security_schemes(),
         build_security_requirements(), build_card_url()
     El metodo ``build()`` esta hecho y no debe sobreescribirse: monta la card,
-    ata el adapter (core.py) al backend y devuelve el AgentSpec.
+    ata el adapter (core.py) al backend y devuelve el A2ASpec.
     """
 
     agent_id: str = ""
     """Identificador estable del agente; define su path y la clave del registry."""
 
-    def __init__(self, settings: AgentSettings, backend: ChatBackend):
+    def __init__(self, settings: A2AAgentConfig, backend: ChatBackend):
         self._settings = settings
         self._backend = backend
 
@@ -112,7 +112,7 @@ class AgentRecipe:
         return f"{self._settings.base_url}/"
 
     # ------------------------------------------------------------ template
-    def build(self) -> AgentSpec:
+    def build(self) -> A2ASpec:
         """Ensambla card + adapter + handler. No debe sobreescribirse."""
         card_kwargs: dict[str, object] = dict(
             name=self.name,
@@ -141,13 +141,13 @@ class AgentRecipe:
             card_kwargs["security_requirements"] = security_requirements
         card = AgentCard(**card_kwargs)
 
-        executor = SdkChatExecutor(SdkChatAgent(self._backend, self.build_system_prompt()))
+        executor = A2AExecutor(A2AChatAgent(self._backend, self.build_system_prompt()))
         handler = DefaultRequestHandler(
             agent_executor=executor,
             task_store=InMemoryTaskStore(),
             agent_card=card,
         )
-        return AgentSpec(
+        return A2ASpec(
             agent_id=self.agent_id,
             name=self.name,
             description=self.description,

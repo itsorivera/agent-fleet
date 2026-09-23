@@ -5,7 +5,7 @@ Este paquete es el unico lugar del variante con interfazes/contratos puros:
                   el proveedor de IA (OpenAI, echo, reglas...). Tiene 2+ impls
                   reales, por eso es un port legitimo (ver adapters en
                   a2a_agent/llm.py).
-  - ``spec.py`` : ``AgentSpec`` — puerto *de salida*: lo unico que el
+  - ``spec.py`` : ``A2ASpec`` — puerto *de salida*: lo unico que el
                   transporte (app.py) necesita para montar un agente. Es el
                   seam que hace "recetas sin transporte" posibles.
 

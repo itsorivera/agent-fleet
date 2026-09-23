@@ -17,8 +17,8 @@ from __future__ import annotations
 import os
 from typing import Any, AsyncIterator, Dict, List
 
-from src_domain1_subagents_service.utils.protocol import parts_to_text
-from src_domain1_subagents_service.ports.llm import ChatBackend, ChatBackendBase
+from src_domain1_subagents1_service.utils.protocol import parts_to_text
+from src_domain1_subagents1_service.ports.llm import ChatBackend, ChatBackendBase
 
 
 def history_to_openai(history: List[Dict[str, Any]], system: str) -> List[Dict[str, str]]:
@@ -124,7 +124,7 @@ class AzureChatBackend(ChatBackendBase):
         fleet: str = "fleet-lab-01",
         business_unit: str = "sandbox",
     ):
-        from src_domain1_subagents_service.adapter.llm.ia_foundry_provider_llm_adapter import (
+        from src_domain1_subagents1_service.adapter.llm.ia_foundry_provider_llm_adapter import (
             IAFoundryLLMAdapter,
         )
 

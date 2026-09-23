@@ -7,7 +7,7 @@ Este archivo es el ÚNICO punto de entrada para ejecutar el servidor.
 Separa la configuración del servidor (deployment) de la lógica de aplicación.
 """
 import uvicorn
-#from config.settings import get_settings
+from config.settings import get_settings
 #from config.logging_config import setup_logging
 
 
@@ -24,7 +24,7 @@ def main():
     #setup_logging()
     
     # Get settings
-    #settings = get_settings()
+    settings = get_settings()
     
     # Configuración de Uvicorn
     uvicorn_config = {
@@ -35,20 +35,7 @@ def main():
         "log_level": settings.log_level.lower(),
         "access_log": True,
     }
-    
-    # En producción, agregar workers
-    if not settings.debug:
-        uvicorn_config.update({
-            "workers": 4,  # Múltiples workers para producción
-            "loop": "uvloop",  # Event loop más rápido
-            "http": "httptools",  # Parser HTTP más rápido
-        })
-    
-    print(f"🚀 Starting {settings.app_name} v{settings.app_version}")
-    print(f"📍 Server: http://{settings.host}:{settings.port}")
-    print(f"📚 Docs: http://{settings.host}:{settings.port}/docs")
-    print(f"🔧 Mode: {'Development' if settings.debug else 'Production'}")
-    
+
     # Ejecutar servidor
     uvicorn.run(**uvicorn_config)
 

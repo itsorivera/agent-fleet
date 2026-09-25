@@ -15,20 +15,20 @@ The hosting runtime is partitioned into three decoupled architectural tiers:
 
 ```mermaid
 graph TD
-    Client[External Client / Routing Agent] -->|GET /.well-known/agent-card.json| Discovery[Discovery Tier: Agent Card Provider]
-    Client -->|POST /tasks or GET /tasks/{id}/subscribe| Ingress[Ingress Tier: ASGI Engine / Starlette Router]
+    Client["External Client / Routing Agent"] -->|"GET /.well-known/agent-card.json"| Discovery["Discovery Tier: Agent Card Provider"]
+    Client -->|"POST /tasks or GET /tasks/{id}/subscribe"| Ingress["Ingress Tier: ASGI Engine / Starlette Router"]
     
-    subgraph A2A Host Service Boundary
-        Ingress --> Handler[Application Tier: Request Handler]
-        Discovery -.->|Exposes Capabilities| Ingress
+    subgraph HostService["A2A Host Service Boundary"]
+        Ingress --> Handler["Application Tier: Request Handler"]
+        Discovery -.->|"Exposes Capabilities"| Ingress
         
-        Handler -->|Lifecycle & Tracking| Store[(Persistence Tier: Task Store)]
-        Handler -->|Invokes Operation| Exec[Execution Tier: Agent Executor]
-        Exec --> Core[Domain Engine / LLM Logic]
-        Exec -.->|Yields Events| Handler
+        Handler -->|"Lifecycle & Tracking"| Store[("Persistence Tier: Task Store")]
+        Handler -->|"Invokes Operation"| Exec["Execution Tier: Agent Executor"]
+        Exec --> Core["Domain Engine / LLM Logic"]
+        Exec -.->|"Yields Events"| Handler
     end
 
-    Handler -->|Chunked SSE Stream| Client
+    Handler -->|"Chunked SSE Stream"| Client
 ```
 
 | Component | Layer | Structural & Operational Responsibilities |

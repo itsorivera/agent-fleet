@@ -4,6 +4,7 @@ Agent Factory - Factory Pattern
 from typing import Dict, Any
 from infrastructure.langchain.agents.base import BaseAgent
 from infrastructure.langchain.agents.risk_triage_agent import RiskTriageAgent
+from infrastructure.langchain.agents.fraud_detection_agent import FraudDetectionAgent
 
 
 class AgentFactory:

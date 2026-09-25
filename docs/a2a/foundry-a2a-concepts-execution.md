@@ -1,7 +1,3 @@
-Here is a structured overview of the reading material, updated with technical precision and standardized formatting.
-
----
-
 ## Overview: The Agent Executor
 
 The **Agent Executor** functions as the execution core within an Agent-to-Agent (A2A) implementation. It serves as the programmatic bridge decoupling the standardized A2A protocol layer from an agent’s internal business logic and model pipelines. 

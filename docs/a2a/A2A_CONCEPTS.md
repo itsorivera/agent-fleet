@@ -115,10 +115,10 @@ composition root (`sdk_variant/app.py`), no en los modulos de receta
 ni en `server.py` (bootstrap de 5 lineas):
 
 ```
-sdk_variant/a2a_agent/{llm,protocol}.py  # adapters del puerto LLM (OpenAI/echo) + wire v0.3
-  -> ports/{llm,spec}.py                 # PUERTOS puros: ChatBackend + AgentSpec [sin impl]
-  -> core.py                             # adapter del a2a-sdk (SdkChatAgent/Executor) [sin HTTP]
-  -> recipe.py                           # receta base (Template Method) + AgentSettings
+adapter/llm/{ia_foundry,aws_bedrock}_adapter.py  # adapters del puerto LLM (fabrican BaseChatModel)
+  -> ports/{llm_provider_port,spec}.py       # PUERTOS puros: LLMProviderPort + A2ASpec [sin impl]
+  -> core.py                             # adapter del a2a-sdk (A2AChatAgent/Executor) [sin HTTP]
+  -> recipe.py                           # receta base (Template Method) + A2AAgentConfig
   -> agents/{sdk,portfolio_qa}_agent.py  # UN archivo por agente (receta + factory)
   -> app.py                              # create_app(): N agentes + auth + rutas [composition root]
   -> server.py                           # uvicorn.run(create_app())       [entrypoint]

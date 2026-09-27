@@ -10,6 +10,8 @@ from azure.ai.projects.models import PromptAgentDefinition, FunctionTool
 from openai.types.responses.response_input_param import FunctionCallOutput, ResponseInputParam
 
 # Add references
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
 
 
 # Clear the console
@@ -27,14 +29,20 @@ async def connect_to_server(exit_stack: AsyncExitStack):
         env=None
     )
 
-    # Start the MCP server
+    # Start the MCP server from clientmfor the sake of this lab. In a standard production setup, the server would run separately from the client.
+    stdio_transport = await exit_stack.enter_async_context(stdio_client(server_params))
+    stdio, write = stdio_transport
 
 
     # Create an MCP client session
-    
+    session = await exit_stack.enter_async_context(ClientSession(stdio, write))
+    await session.initialize()
 
     # List available tools
-   
+    response = await session.list_tools()
+    tools = response.tools
+    print("\nConnected to server with tools:", [tool.name for tool in tools]) 
+
 
     return session
 
@@ -52,7 +60,7 @@ async def chat_loop(session):
         tools = response.tools
 
         # Build a function for each tool
-
+        
 
         # Create FunctionTool definitions for the agent
         

@@ -1,0 +1,258 @@
+{
+  "id": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD",
+  "agent": {
+    "type": "agent_id",
+    "name": "ContosoPay-Customer-Support-Triage",
+    "version": "2"
+  },
+  "status": "completed",
+  "usage": {
+    "input_tokens": 13645,
+    "output_tokens": 1139,
+    "total_tokens": 14784
+  },
+  "createdAt": 1791548681000,
+  "output": [
+    {
+      "id": "wfa_0dfc40f5bd45952900M2qB8em2rRMyPRrhggg73dIWYhdmjO8N",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "ContosoPay-Customer-Support-Triage",
+          "version": "2"
+        },
+        "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+      },
+      "type": "workflow_action",
+      "kind": "SetVariable",
+      "parentActionId": "trigger_wf",
+      "previousActionId": "trigger_wf"
+    },
+    {
+      "id": "wfa_0dfc40f5bd45952900R60oR1Gn8paiUVzOq3N1uhtrs1HujPmq",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "ContosoPay-Customer-Support-Triage",
+          "version": "2"
+        },
+        "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+      },
+      "type": "workflow_action",
+      "kind": "Foreach",
+      "parentActionId": "trigger_wf",
+      "previousActionId": "node-1791460900284"
+    },
+    {
+      "id": "wfa_0dfc40f5bd459529000crMlU4imK2oUy7obKa537ptJ68Yp7WH",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "ContosoPay-Customer-Support-Triage",
+          "version": "2"
+        },
+        "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+      },
+      "type": "workflow_action",
+      "kind": "InvokeAzureAgent",
+      "parentActionId": "node-1791460935594",
+      "previousActionId": "node-1791460935594_Start",
+      "agent": {
+        "type": "agent_id",
+        "name": ""
+      },
+      "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+    },
+    {
+      "id": "rs_0dfc40f5bd459529006ac8dd0bc394819081936baf0babfa96",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "Triage-Agent",
+          "version": "2"
+        },
+        "responseId": "resp_0dfc40f5bd459529006ac8dd0a8868819084496070ef621f65"
+      },
+      "type": "reasoning",
+      "encryptedContent": "gAAAAABqyN0PMSLeQ_MUIC88POjWlvYr_rOyDB7TN1ecl3zjEG8t1QD9OED76VERBMMnWI5qPxCQHvhEbz9uYBvghNKK7mtrz-Rb3VerEYVD536RmijGvCCNmCvmuffe5gB4oJ18QOiDkz_ahkQueewZOOGlosIHhC5bKQ8EYgB1YuLd1M8FqhVWM45xerBXQu7ggqA0bTYhfyM7XAKTENSv7UF3egW_DSBN-x3p6zQ80OTe3-LdaieDkZJeAtThTYOh70jmM3ybEUNQtZa9JTjJSpO9hTi7T5oPuRBkzXzGeUdxRNaxV4UePW6g6wHS1Lu53eMXhTaoupVeahjbsGdH12RcXZxWA3aAI78IvCJ9d8xkW7aicu46zu424GPA5Sl2spCxMcE6ppefJsHJvAlHWHv9Ndk1RHNdxvdaDOnryEgJNBoczAx0DSqEJ3zWQb9dYOrQHPA2W_kEdfjXC0do9dnDPlmhGXBwmOvN8tZWGKl6fvMw3SPcrOLMYfiJ6Fbz48zPBpiCqGVYzS0sFS38NDZv_y6ZVrrasKW9lwfpjy0o5YTlx1rnANQ4G-KbOVLZlQAPCNFqi2TJvN0xvPmYKKjAiR0CQIf1tAx6qINWEoYBT0UAqaBYLvdimjrYkBdwug1YxTzDe-RK-oLhpSMfnDACd1DuRswNzv4kBU1Xp0lpEnlFlRIDrWuLAYz-IMNpNXjA6KCk7WHn81iDr-rsHsvJ2w0SAToe8tHIfepT3kk_Ts3jX6O0ei-BJgJBK-zdLJgyUKSXM6_Ks1Zy-qoA_nfLrw_Oa49pNn17puKckyfDBocQyvYk8gSOPYncP-L3UyYsRPjmfrX7Whl9e9k509Yl4nxz9d6UMWNspx3LBnjWNGgZ2IxnLZKIe1GyqXQ22LUsmyThrx0u7QcccEeB8RsCCOeaayu-Qvyjr_BZzIU_hyxKkxhODKMWgaF36z9WmRIsMdnUEjbNATNFeysxxstXKptnVk3R3xwZemb9irCw_wJFLvY-XRQxElFtsMZv0h7G4J-RHjwvx-sHkblEpRQm0RZjLFP8xWq8ME8fP25fJdJf5DsgNynEXO20MLTonGzVZJx5Bt8deie0M8gYXm4yLcajtGXsbJiYpy7wk3geASEH0veeSC922FDIhGhe8dQv_E8jl7DcqEOAGYYNUGuTN8hLcL2GbCbAXeIHixkyeeJTgoQaVc45lYELRrewAgNCnz2nUQB4_Px8Q834KTUoowRBHB9SuKTBq7cBePyp8H3Xz7A8kkyJaiqHZLBeoxbOE5p6oNARCEB9cp6xBN679KWCkz_50fbOnpPJstwergAYnRflvPtEmkPEgi--GQjTaQLcpsev7EGTmFE7uas-vz1MSZOAxeI2bkLjXpvFnx28gZ_fq4R0CFPZrmJadqiifQ_yWs_ESFtCYdvdEYHZ-Bs4IJfC7dcSOrK84mtgnzyKIj8eECNIizTQcLj3XMFFIFDvjuGfKNn0bZQcCaafOVjKz8piq8W-vrxwhcgsRWS8twZbWoTPUL_iW6xy9jk2j2d_H1_9KhlwGfBkTkAuFgxW7ACnPWVcs-e6uV6IJ_dMxg2YtDO59S25ahNUcs_YjOzDR_wWDY5S6Ku0_JcGGWH67yiLVFGrvhlIpvJ0jKjHVtOS42luJAXqb_wjyoJL1QhMAeEU1SumXVSuvBDNlNkZ0FtLMFkZrWIjiMYWSxYtFED2waFj7JWzSIG0w2eB_wG8w4k1LmcQeXyIOc2z6MvyIY4R6ZuaqQ6jurpHrW3gei-fpNQv9bDtS0SQ26CUb8cIGnpeJMdt3_oIuuiUWXeGCrWzTs-CMHuIwrIcSmmLsZHQtC8dEjuUAzlnM-0ywIPo3FgJY2jD_vvLdJi5Bn1eB55nh10oC_FMyIYgxRcdZYT4MgRXNoRjltF2CQmnppmg8C8yBJW6KgPl2ilSrm-5B3Y55bR5H1gEQQAGVq57Th42xVODkLHbvii8RpaaTOf2n4jqDxLxZnAWtLHVTh1kRxeRISS9Vy_mEnAu8SAxDEa02egY5DU4Q4xeEbrOKW5N71H39NLctyKUh-d93AOUZNqI080Ds15jd8L9JixVwMeAlU8x0ClayHEuxdOnynPNlviNFoIUcjGdACHQGxS0b4daseDhUgoLmtq0w1y2EuaPtLkchPmFGruT4dEU2pF7Rx4kkZQRYk_j7BZOygfrDVfGfr8D_3mzcosAc3A0JqLz-wleg33IREoY8wRiEI204Ivjp1cRXOR_h-ZJifls98c-yuOKZecqF4ATLHjw-kFv9SvKwHS2Ognt6DSHLrB8uPwnSvrV34gvrZQwFJEd7_kK3Qj1HYVEzrMqmCEWFqDdJTCMqYt2fM4a68zHTqmmGqRXgfJTT-IJWNNkpslzu9h_2FkEkBp3ZCXHyTyAUcMEBpb3zlG1ARc5jFFQboJ2vAZn3NQhN-xyepmogzFmViXW9v3XcHLY1xet1eCQmHdbgxyuOYgSAZzmsHlSUlPO2RyC_9rEIkUD2oPnPCiH24E2DD5PvEFuacnSz3kKVYOQYs6vlpAmva5iQejI8090nazvfcXKtJbNK7fV1MaCwVJv5cd6KWlM3tR8F4UyG856AqznAYrEpYy1qFOjMEtrlIhFgyNWT9MPtEf5iogIYXqezpv9HKsCnVbBHwbvTkdN7NnZsreB-0G03AZL7icSh1BFSNOLcMaweQMsp_d_e2lb1A4doYqeOtbToQINJoSyubFi80-cxm5XdWZs0OYsDYhBMKE149WaBHXwiMFkCYkqfpkIPq6Megk-Ll0vde_9cSMjTgcMinwu8VpG_trnUfg3jiJnBics80VANE_ZT7btxhJxvF65qZ5MjjW8KfLsQXXA4jEy_fNmrf-HoGgF_3PWxgnnCRBO5HByDVBOutSg9DGz0FAit2t_uun5x0lCXpi7Sa4HvlZcVsFVwRaNLNmaNaLeo9BmZFASO08IbQPlgh1akafSLeugcjOX_4u5_5y7xauPyyzJrsC6SHoinw0gEV7MRaSmse-bELwDg_rVqtFFVRLgPiiPaie7z4pR-ak62i_wjCKPkrDVAOf7yO5FgMNble9vYOs1MFqu7OJVRRmVLD9NesrNaawuI22vAIJhtawu01HBhLAEozSx",
+      "summary": []
+    },
+    {
+      "id": "msg_0dfc40f5bd459529006ac8dd0ebd8081909764b9366da7fb36",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "Triage-Agent",
+          "version": "2"
+        },
+        "responseId": "resp_0dfc40f5bd459529006ac8dd0a8868819084496070ef621f65"
+      },
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "{\"customer_issue\":\"API returns a 403 error when creating invoices despite the API key not having changed.\",\"category\":\"Technical\",\"confidence\":0.96}",
+          "annotations": [],
+          "logprobs": []
+        }
+      ]
+    },
+    {
+      "id": "wfa_0dfc40f5bd459529002lNa2l8QCBvXwbPFBn4ux4LALsaWeJjm",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "ContosoPay-Customer-Support-Triage",
+          "version": "2"
+        },
+        "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+      },
+      "type": "workflow_action",
+      "kind": "InvokeAzureAgent",
+      "parentActionId": "node-1791460935594",
+      "previousActionId": "node-1791460935594_Start",
+      "agent": {
+        "type": "agent_id",
+        "name": ""
+      },
+      "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+    },
+    {
+      "id": "rs_0dfc40f5bd459529006ac8dd1066d0819096bdfb42a54d58ce",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "Triage-Agent",
+          "version": "2"
+        },
+        "responseId": "resp_0dfc40f5bd459529006ac8dd0f67a48190a7d9a676d29c10e9"
+      },
+      "type": "reasoning",
+      "encryptedContent": "gAAAAABqyN0To1ku68tQstfLs_N9pUmtjBtWuch_cKNQyJ-EIF8rZy3o9stT7ID5uer3sB5MVIsX9i1v6Rsz-BQyU3n83OWEW9HIuVGVPiYgIhHIdd0qWxrUZ8yxvmVBym3mTKpjZrb5YNELkFnhiJ6pASXktCZ5CPl8ibDXGb4Ys8rOa135EYnATNxdsjIQwRL2f-8RFE3YSQ7Gj9NYENSJhynu6DYq_UBPjsyDwDik7BXeeEGE4_uZr2IKS7yJfDLiZLSlJSFHRGzJTydupNIl1-kYQnw41MpA2ytFI_PF5E9QiHCj4ofW3n6PuFAjrAW-0C7NaVgNO68DkDWKmsUrsBIulzunLv0vCSQdNTcPlZe91RCd5LBQ0GFzEohBZPqoNN8e4TRGmJEKXfBtW1rrqFgpjZJyT7Q9x5BmD9Mucp713g5Y1NOOHbqZgt7BCqVXpQq2rB44iqqlgmSfpCQS61v6kuZGuJPj2o9_yE-cj9huoqhEqPBWj1p-tvoM2NK7-GPzJ10F5QLJNgWoa7oYKJg1ejfoRoWcuEg10Tn2nz-mrn8vpmmCZ2DolrRlFEfLrNOVHWIZ9DI4prfQ5PXh73X5ROAJwsmvLrBGG1XRqHNzzZLQGBs14PKoNZkZ1b6O0gmCsiu9fkKFET2N7y_iYtMS_72SA6Qk9xxyuAyigU3oKKHt4cA8oz5cTxcU5-wxslBlWjGCarHOwQip8pAk9Ye6WrrVliVq9aThAhnXvPe-WG10CvBldy0MM_KHyYvJfNjsFUxsc6eoL43Wjp8tuH-byYGSIZkElN95Op2U5oKNRZb5uGsB2wF41f2UtJWf9GycYqIyZPXkh_gZ8X8qsXntLww-SFGjCErq-oM1gWhSfW3YvgcapI4W3cRxiscTBuTuRvWxs6zUM1Ydz72C568QLL_VN9pxG1p6QwSO6SHdwB8SNHUxI1ZloqpwJPsNOkVN9K5kwCEz8EJ4VWIS_rcvVeOC8-q6iGihVjK24aJMWMhnUKB1neL3oSjQplMZf9grkBBKxemEI2q978WGcYDwGfxkbeOpZojAKusfObgBDUlC4cu0rNgUrCPzcw8V9thM9Bfq3SP0U-nT7iFi1Ug_HrJ63EsxhrINSmolGvIQ6Xcda5x6lkb5bBIY_yVYRCkOPKcqO2I65qta6Euj3xZT7cJ62E7U_S70EGS6Z2Ox5yBANvnXMYOPC1DO7N-d8eatjxaQdsZYSM9Ae_qq6aUtAd8f7iM56tjnMYro7gsJ-1UpuQaQojcNK91x9OCuXyGuWH6SEa3qneJ4pxYGknEt-pwza1JN-5qCMDTMp08cGI-tD7WSizhcTJLZv4bR9OTii3ekHAFDfij-u7wTHNna_SlXeWRwDNyAvPsUFoQWPemn2zJTEvlM3zZIUSxjoZCsf3-cjO60CeW87mgC01m8Glox3B6OOMiojujas2qpF0qRwedecW6tNtJdmdCW_Ay8pqqcY5mGwBdqzLkrt4wxmUUgVWlNL-V2EX2dsxANO0z8Y41o_63LMnIjDcd3lB3E76gilYgoGR8e-It6brjCvfTerDR1O6gkGzncv_RXZwerWFxJHcjYmtUmh-fS8EOGdtDXJXZ1leMWMnYqqWCMXLZfhmFybkLZyu22ZD-zN2lVKwoxHc7lEUYiWhbKPLmP6lBym-sNONFf_CKNmOJiyMyK6AQTIZm_H6bs8Vv2vsAEreBdmSfLkjc6H36zl_R8YbTTulGy_lMNmJzKPSy9V_ggJQB3FZSa1W4iwmB8tutiydLAlkzynO6NOxlWQge9g0avpWdd5uX3FWCL6CpVDzr0AHa1bcYeC15lj5lS4cvi9JkQAxjaKMurncyOiierjKP1T6hWwSuh7tCsdTytuUkabHz2-p3VtzGsDDydWRZRqWJPKXEJ1nJcV3fvpQnzqZcHwi5PXURggQloQd1hxvkUvay21s5VhrQBSxyaHtnuo1GqiyjPzyvxn8eVqTgQ0WpP2J9OJY-rqaVkParlT0JcjJjNYM_OJTe3VNv483FSSmyYT_BvpZ2XCQia47zg-nsDa3NJffvn5pf9tHw2HGc7Nw8OO562ImdgrUmwuQcONnqLrursweJgyN-THolnXuqpV7tVCj2NEfM_9qj6ZP1zmaOm1oQxiLKbhXbDPucPdm82-jes-6msRFp2EDtaKBAEpNSYkMGnSo4K5xVV5hu8bIsEPND8hJz6W0VzzxS1x4fDpVs7AJgihMdEWRVt9wXgyTM9PfYFh7skKzFiWTk4FCa8UaSSjM6mM1nKo6ApeH6m0WKMw_GDoKgev7fF0ub4I-d_R8dupG1FKYX9cJ9igv3LWF8a_LFEnXRc9GtF3t19YSA0NReNLizMSge5nb4ffeslWLJcDgN2L31ZGJswSTEHdDFJi3lCdQduL-XiobhStI5oRuXpahR9IIXkJB4zWaQnTPTj4b6w8RK6vCiyppyW9afcDTQjzK29lt5OxSZF9gmJV1KDKldchzdvFhLcNB1YYtqiA25fbGuZOsCGT0k4IqIvsQTT94p9zYJZOqLgQSQxoEi64ek68U0RU1NStuf5CSEoY2ZMXZaR7mttwmeahk0sjbw5QPZi3_xe01vR7shBAPMmh3nrXgzH5c6VIC7RbFT4fhqrKzzI9F75hans5UNhX1sxvqaRDjhDk_oKSj2UEaiTr6uqYHLJmGbPayqjd8x0MMG6O6J07ZsKok55iotZ9HWBjkgx_ZEspIE=",
+      "summary": []
+    },
+    {
+      "id": "msg_0dfc40f5bd459529006ac8dd12a83481908de9b43e960baa3c",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "Triage-Agent",
+          "version": "2"
+        },
+        "responseId": "resp_0dfc40f5bd459529006ac8dd0f67a48190a7d9a676d29c10e9"
+      },
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "{\"customer_issue\":\"User asks whether there is a way to export or download all invoices as a CSV file.\",\"category\":\"General\",\"confidence\":0.96}",
+          "annotations": [],
+          "logprobs": []
+        }
+      ]
+    },
+    {
+      "id": "wfa_0dfc40f5bd45952900ZNbNfskdFH4PkW3DG8Mwa5DBTrmuoduc",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "ContosoPay-Customer-Support-Triage",
+          "version": "2"
+        },
+        "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+      },
+      "type": "workflow_action",
+      "kind": "InvokeAzureAgent",
+      "parentActionId": "node-1791460935594",
+      "previousActionId": "node-1791460935594_Start",
+      "agent": {
+        "type": "agent_id",
+        "name": ""
+      },
+      "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+    },
+    {
+      "id": "rs_0dfc40f5bd459529006ac8dd1668cc81909e7a3e0a46efad87",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "Triage-Agent",
+          "version": "2"
+        },
+        "responseId": "resp_0dfc40f5bd459529006ac8dd1433888190bbdb216dad0a7a55"
+      },
+      "type": "reasoning",
+      "encryptedContent": "gAAAAABqyN0aKMEz85Xoop_ovtsl0AhYdX55GqpLQb4FbbrOwqGiq_wJyOjYEilaKn9QAncy4T-XzFVNWw7QyJPAOv1JLtej4GjAzq4rq3m4TOPMJhYINPv9KgJhwsud9cgKttUcuXjyHWbLASFXMRBhYwNhENHqL0X2N2SC6jrpw_HUVir-qmN4Mz1Y1OjxEMmS_6373J3LbIlGC2VltObLbnrJVvRSMdDFQ1afbxHdA-CfytS1GaZvnFffAGA6w7F8TbODdLdrXjn7_FumQKb6qs2DXm4jlwqxfsQrFiU-5iIbhsG4l55Y_FDftVvyPJh-jieAP5YpS9oZ2G4c3BOKaW-K1mqbh6F-4NyDVlkOHdk-Fp8oV1z4lZZhk5tBWNZ6maVWqsYKE7eGJzW_EAr_5aBiSMhGfezNRLREgCWM5PIuVe2nU572TlVXNOK2_8pJ3nqj40J_mM5LiOptu8bgtrb12vz8FohDRpXMEEmYEczUzihZua976C0CX4RhPPPPX3dga3TJLnS55cCB9ohM7XMZYLY-AO0oYmszgH--18KMtX_b0QYXnfb43bp8O2HKdLeREjZwDnBJh3e8T3IKExFKWwQEeX4cqbPlWiBVDt0DrxOtcI6bt0YuJ9SzdN8wMsji2c5IiNwPSQQTtgPqqwo3pREbZuB1rbmrEGaxK-Sdzf2DK1HAUhS-8JOV37SISgmlyOyQZDlau_lO5HIRSoWFFxq5Kfh8jWrJxyXcQ_Y3sf5vGaOGJ2ARqO4xu1m7OFZXxoseu3vyqaCwGRoVBAbCH3FZBL8deMcuWXtZJJhilXFE-GwgVhA0iUUlki7rVFOCWoI1TErk20U_cN8KsckSLHM3r1iJ31-tTGWCCb-xU8aRJMR7ICxWUHbb99S_IiI1hAYLikSiElHLiyuXqEmts2f7zBsQVC-i2EjUWxsdrRsEGIbBCykig-B03Q5QOe-izDzl3z2E4FR7lVG4NQyzn9W7OZ7F50_T8Hdb68lg3anK74WjiGpaELh2mf7a2s_MJZ1bZ20CIhRU_M1xOUnSD_67D7FFc5ux_BpLVpmR-9onDIdI_-bi6XpNfDSZ6sX2khrS6EvD1LyhjHyuIQmDm4PVqrjmC2nXU8Dvpd9m64BK5kwVG5_4c_OFlCHX3OSMudUb-mJ5oxan-aD6IOZQ4-V7eioxtRLVyc2KO8POySJPKlsU2qSAqavmmlU-OSXuhYaLZKsJ3Gcgs83A7fTMbZgOMlrPblemfp7-VjasWKivG5g7695T7Oe-xc-F0LhlOgWnEQ9Q4hShVU6VPaSGG3TBz_W4H_L1hUigvC9NpFCkoK03jb9i0HiFEjrcyu613g4dHYdpAB_iqLcKCWTtM2J8SmMp81qiwiHneU1srt7hW1myfWseBzvqpMwrQ1qvIyoJRg61C95tXVbbb2YqktnkoCISDGt_vi4XhgYmRez4mAr8yg5qoh6-ie57uyaa9tOCjbHCje4yBL9-Bev3ZpBZ4cJtke4m43uENu3_KF9Uv8UtM1f4jdhlYnsQpRpg_zsSlHkZzon_75FDTcVEkh1dsHbGso10zu1fzV15ROoPav2laTEeAvUrCZm5Ae-PH7wWLJrcFvf5UPIaTvKdYkKZJ1ozGQDd5LLR_LL_79YNC-0WSobwo0IlGq5co4kMuHsCWnAUdv8qkVVCsvPczp35D-XXOEdqLsVuAfEI_kwc7Pye1Xu837dymZlkFFo6d-XlfpbKVBu6E50HlX50H_NsLC6GBnWgcO2DcbOMhFErBYbRVlTfZm6R--WucRFoR7GoU_pkBeMst4nTcGj961QPp8d1S5O6v62h5kGyK1KOhBMpxuvu0U5WDhGVeYgc9dEkSsZzhIaPn4rJ_1c_69W_6FtRHVvWxaKrsQvEgXV57W8G3VXf0MqlTbosoUopBVmnBD-2ok79asF1BEuds7E7iotT5hjlFygFKvkVglAs75NUoNkfeLjxy-1CWjabJ-mL45mHSzUy0N7Ebg6u6l-FFoou9h-l6cdh2GSbKmYi7haG5qRdUwjUJUw4yqZnUqpJK3EyE36Sv8DoZcMQHb953I1vEi2JlueUmQHAuzCwpWqA--7w92JAREqB1urxhIqj5jgzUlNpk2tsIrJ9BCGJoMZ7Ai4BqzeOYOs17Wy1ARZEZ-RKXJaYUXevmhXCorgpIdvjxD1XBcUJnBwC38GugKjTpyHCssdJcfwlMnbVfEAU7fLeml35rwoOkDPIuh7LKzxPx5OGIE62cPN0ZOhJDau9CTicD9sl1BIJwXfVI--N2NrHndh8ZADSzMzcdTwZtjMdhE3zYrWFYXoM2Xm89mna2KN_2va9cqSTEo_RLs8vbB4YIOqdXK5TIIsWC0pmsSOieu_AVVGQq9fRIIYkHor6zo9hSF2Zt6BUn-xHqbmSUxosvLKEHm9wCjiifrhtRLkRHZveP3wQ5ckMVIZFZiFRP0zeJInYIVlVck002FzOoKT1hR_LMutgfDmlJvrVN01nJY9FG_Uu6mcbg8M1t-QJ4YmjEjCi6A36vIAmWtAaqbZ9MkjczSxlKNlpkOLOOlLmG7VAiTrnpc4z8k5K3pe_iEEbrmnrQ6ItvriSYoTx6k32IRTKvyLNZR5AsuGt9hbfJr9VefzB7vBjKjD7nJeLsjPOIdrZy2765UBkWyMgAEHBMb3vaLyQAOp-IiU0PoxQTprb5nurvSOLuM4NrgLs3ENYXjSIU02cwmEW-xTxVzFmCbOpXMQJAN9aDyiEh5JTbS7Yy0n6-y5dAnVjayohspUPxaeYN0Ms8ILymIe6oQ_Ku5oaticbxmtK8W3Z_fuxfpM7ZdqdZGD48VInQIBpaHYLJkpAjr3cJd8xRKXgduoQZi8eArKlzcrL1jzPMff-IhSeNte5XHUAq2VX67S1B2rv93tEcnUObna_cxSrO5Q1rMFCbPBUeq1KEcG9gvsdlS6PBUvIdCmvHiSxrBCQO7VBQa77wzg8You7rjzWTT0wfztNrUC8ZLyb5MmOVtcDH-iN1fq9UEJRx7qQo4-_HAak4l1t-eB11JqNbhTNhtM7GtCYJ_9119wBAM68nUqya0WRCoqVwUBFf4m7IFO7hfQ9yp6LEVsjIl_f_DoMzzmtpQJ2nz4CBhQIl-6tHzn7Z5BdV3aSg0x5D6yLPmGktdqSTfN0-6dJ0I8PGUaPPwZLo8poIWAh5XFFntpgWRPCgel1WaAJVpj0coXFqQegCgD1EZgDLRbhMV4S3MPb-fxCZ3Y8e22MnC-XdZDluswkbpTxpVkKEW9RX0_BrNo2NutX4pjrx84392KfFJcJYRtxK1zVKubjHwaMGmyszvlbpfyKaIzjx3qJC-6coX-jZ9-m0AVvVMJiCzn93n5VFBtW9pm7raPLkx0AuBKCE3f5QP5Om1BE7_8BRey6PA==",
+      "summary": []
+    },
+    {
+      "id": "msg_0dfc40f5bd459529006ac8dd19b690819086b4bf7de388b4e1",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "Triage-Agent",
+          "version": "2"
+        },
+        "responseId": "resp_0dfc40f5bd459529006ac8dd1433888190bbdb216dad0a7a55"
+      },
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "{\"customer_issue\":\"User reports being charged twice for the same invoice last Friday and their customer is also seeing two receipts; requests assistance to fix duplicate charge/receipts.\",\"category\":\"Billing\",\"confidence\":0.98}",
+          "annotations": [],
+          "logprobs": []
+        }
+      ]
+    },
+    {
+      "id": "wfa_0dfc40f5bd45952900OTLSCIQ5xZjIK32VikTx5hyhr7VlRaUR",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "ContosoPay-Customer-Support-Triage",
+          "version": "2"
+        },
+        "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+      },
+      "type": "workflow_action",
+      "kind": "SendActivity",
+      "parentActionId": "if-node-1791461641843-62mf9h4oActions",
+      "previousActionId": "if-node-1791461641843-62mf9h4oActions"
+    },
+    {
+      "id": "msg_0dfc40f5bd45952900HbAtTi1FnW0dN5n6WpGP6C96dLEuicVD",
+      "status": "completed",
+      "createdBy": {
+        "agent": {
+          "type": "agent_id",
+          "name": "ContosoPay-Customer-Support-Triage",
+          "version": "2"
+        },
+        "responseId": "wfresp_0dfc40f5bd45952900gJR05FQlGDEXDM76218eR1ldrGMWTzmD"
+      },
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Escalate billing issue to human support team.",
+          "annotations": [],
+          "logprobs": []
+        }
+      ]
+    }
+  ]
+}
